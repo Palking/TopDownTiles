@@ -258,7 +258,7 @@ namespace TopDownTiles
         public Vector2 GetCenter()
         {
             float x = (float)posX + (float) WIDTH/2;
-            float y = (float)posY + (float)HEIGHT / 2;
+            float y = (float)posY + (float) HEIGHT / 2;
             Vector2 center = new Vector2();
             center.X = x;
             center.Y = y;
@@ -284,8 +284,8 @@ namespace TopDownTiles
             int directionIndex = (int)direction;
             //spriteBatch.Draw(textures[directionIndex], drawRectangle, Color.White);
 
-            //rotation test
-            spriteBatch.Draw(textures[0], drawRectangle, null, Color.White, InputManager.floatDirection, spriteCenter, SpriteEffects.None, 0);
+            //rotation
+            spriteBatch.Draw(textures[1], drawRectangle, null, Color.White, InputManager.floatDirection, spriteCenter, SpriteEffects.None, 0);
         }
 
         //to be called in Update only
@@ -363,15 +363,11 @@ namespace TopDownTiles
             //}
 
             //8 direction support; if any move buttons are pressed, then move based on direction
-            if(Keyboard.GetState().IsKeyDown(Keys.Down) || Keyboard.GetState().IsKeyDown(Keys.S)||
-                Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W)||
-                Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.D)||
-                Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.A)
+            if(InputManager.Left() || InputManager.Right() || InputManager.Up() || InputManager.Down()
                 )
             {
-                //+(MathHelper.Pi*1.5) to turn to the right position
-                posX += (int)(Math.Cos((double)InputManager.floatDirection+(MathHelper.Pi*1.5)) * speed);
-                posY += (int)(Math.Sin((double)InputManager.floatDirection+(MathHelper.Pi*1.5)) * speed);
+                posX += (int)(Math.Cos((double)InputManager.floatDirection) * speed);
+                posY += (int)(Math.Sin((double)InputManager.floatDirection) * speed);
                 //collision check
 
             }
@@ -379,14 +375,13 @@ namespace TopDownTiles
         }
     }
 
-    //is it worth it to do an extra InputManager? propably not
     public static class InputManager
     {
         //TODO: figure out a more direct way to do it -> many unnecessary steps propably
         //fields
         public static float floatDirection; //keeps track of current direction
 
-
+        //Configure player inputs. Allows 2 keys to work for one action.
         public static bool Left()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.A))
@@ -448,42 +443,43 @@ namespace TopDownTiles
             //north-east
             if ((DirectionKeys[0]&& DirectionKeys[1])&&!(DirectionKeys[2]|| DirectionKeys[3]))
             {
-                floatDirection = MathHelper.Pi / 4;
+                floatDirection = (MathHelper.Pi / 4) * 7;
             }
             //north-west
             else if ((DirectionKeys[0] && DirectionKeys[3]) && !(DirectionKeys[1] || DirectionKeys[2]))
             {
-                floatDirection = (MathHelper.Pi / 4) * 7;
+                floatDirection = (MathHelper.Pi / 4) * 5;
             }
             //south-east
             else if ((DirectionKeys[1] && DirectionKeys[2]) && !(DirectionKeys[3] || DirectionKeys[0]))
             {
-                floatDirection = (MathHelper.Pi / 4) * 3;
+                floatDirection = MathHelper.Pi / 4;
             }
             //south-west
             else if ((DirectionKeys[2] && DirectionKeys[3]) && !(DirectionKeys[1] || DirectionKeys[0]))
             {
-                floatDirection = (MathHelper.Pi / 4) * 5;
+                floatDirection = (MathHelper.Pi / 4) * 3;
             }
             //north
             else if (DirectionKeys[0]&&!(DirectionKeys[2]))
             {
-                floatDirection = 0f;
+                floatDirection = (MathHelper.Pi / 4) * 6;
             }
             //east
             else if (DirectionKeys[1] && !(DirectionKeys[3]))
             {
-                floatDirection = (MathHelper.Pi / 4) * 2;
+                // equals standard direction
+                floatDirection = 0f;
             }
             //south
             else if (DirectionKeys[2] && !(DirectionKeys[0]))
             {
-                floatDirection = (MathHelper.Pi / 4) * 4;
+                floatDirection = (MathHelper.Pi / 4) * 2;
             }
             //west
             else if (DirectionKeys[3] && !(DirectionKeys[1]))
             {
-                floatDirection =(MathHelper.Pi / 4) * 6;
+                floatDirection =(MathHelper.Pi / 4) * 4;
             }
 
             return floatDirection;
