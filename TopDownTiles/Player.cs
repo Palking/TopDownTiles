@@ -11,38 +11,11 @@ namespace TopDownTiles
     public class Player : GameObject
     {
         private string texturePath = @"graphics/player_east";
-        //Texture2D texture;
         Texture2D texture;
-
-        //startposition
-        private int posX = 250 + WIDTH / 2, posY = 50 + HEIGHT / 2;
-        //alternate option, not needed for this code
-        //private Vector2 position;
         private static int WIDTH = 35, HEIGHT = 35;
         private Vector2 spriteCenter = new Vector2(WIDTH / 2, HEIGHT / 2);
         int speed = 3;
 
-        //properties
-        public int PosX
-        {
-            get { return posX; }
-            set { posX = value; }
-        }
-        public int PosY
-        {
-            get { return posY; }
-            set { posY = value; }
-        }
-
-        public Vector2 GetCenter()
-        {
-            float x = (float)posX + (float)WIDTH / 2;
-            float y = (float)posY + (float)HEIGHT / 2;
-            Vector2 center = new Vector2();
-            center.X = x;
-            center.Y = y;
-            return center;
-        }
 
         public void LoadContent(ContentManager content)
         {
@@ -56,10 +29,10 @@ namespace TopDownTiles
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Rectangle drawRectangle = new Rectangle(posX, posY, WIDTH, HEIGHT);
-            //spriteBatch.Draw(textures[directionIndex], drawRectangle, Color.White);
+            //Create a Rectangle centered around our player position.
+            Rectangle drawRectangle = new Rectangle((int)position.X - WIDTH/2, (int)position.Y - HEIGHT/2, WIDTH, HEIGHT);
 
-            //rotation
+            //Draw and rotate our sprite.
             spriteBatch.Draw(texture, drawRectangle, null, Color.White, InputManager.floatDirection, spriteCenter, SpriteEffects.None, 0);
         }
 
@@ -142,8 +115,9 @@ namespace TopDownTiles
             if (InputManager.Left() || InputManager.Right() || InputManager.Up() || InputManager.Down()
                 )
             {
-                posX += (int)(Math.Cos((double)InputManager.floatDirection) * speed);
-                posY += (int)(Math.Sin((double)InputManager.floatDirection) * speed);
+                //posX += (int)(Math.Cos((double)InputManager.floatDirection) * speed);
+                //posY += (int)(Math.Sin((double)InputManager.floatDirection) * speed);
+                Move(InputManager.floatDirection, speed);
                 //collision check
 
             }

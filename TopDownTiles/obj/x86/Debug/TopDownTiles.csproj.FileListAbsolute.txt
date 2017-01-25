@@ -31,3 +31,4 @@ C:\Users\Jürgen\Documents\C#\TopDownTiles\TopDownTiles\bin\Windows\Debug\Conten
 C:\Users\Jürgen\Documents\C#\TopDownTiles\TopDownTiles\bin\Windows\Debug\Content\graphics\player_north.xnb
 C:\Users\Jürgen\Documents\C#\TopDownTiles\TopDownTiles\bin\Windows\Debug\Content\graphics\player_south.xnb
 C:\Users\Jürgen\Documents\C#\TopDownTiles\TopDownTiles\bin\Windows\Debug\Content\graphics\player_west.xnb
+C:\Users\Jürgen\Documents\C#\TopDownTiles\TopDownTiles\bin\Windows\Debug\Content\fonts\BasicFont.xnb
