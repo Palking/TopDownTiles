@@ -15,10 +15,10 @@ namespace TopDownTiles
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont basicFont;
-        TileManager tileManager = new TileManager();
+        public TileManager tileManager { get; } = new TileManager();
         CustomMouse mouse = new CustomMouse();
         public Player player { get; } = new Player();
-        UI ui = new UI();
+        public UI ui = new UI();
 
         public TopDownTiles()
         {
@@ -41,7 +41,8 @@ namespace TopDownTiles
             base.Initialize();
             //player start position
             player.position = new Vector2(285f , 85f);
-            ui.LoadGame(this);
+            ui.LoadGame(this, spriteBatch);
+            player.LoadGame(this);
         }
 
         /// <summary>
@@ -113,9 +114,8 @@ namespace TopDownTiles
             player.Draw(spriteBatch);
             //draw mouse Layer3
             mouse.Draw(spriteBatch);
-
             //draw UI 
-            ui.Draw(spriteBatch);
+            ui.Draw();
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -125,96 +125,7 @@ namespace TopDownTiles
             paused = !paused;
         }
     }
-    public class TileManager
-    {
-        static string[] tileTexturePaths = {@"graphics/Tile0", @"graphics/Tile1" };
-        Texture2D[] tileTextures = new Texture2D[tileTexturePaths.Length];
-        const int TILE_START_X = 200;
-        const int TILE_START_Y = 0;
-        const int TILE_SIZE = 50;
 
-        //map, to be moved (background child class, maybe even elsewhere?
-        int[,] mapTiles = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                            { 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
-                            { 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0 },
-                            { 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0 },
-                            { 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0 },
-                            { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
-                            { 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 },
-                            { 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0 },
-                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        };
-
-        public int StartX
-        {
-            get{ return TILE_START_X; }
-        }
-
-        public int StartY
-        {
-            get { return TILE_START_Y; }
-        }
-
-        public int TileSize
-        {
-            get { return TILE_SIZE; }
-        }
-
-        public void LoadContent(ContentManager content)
-        {
-            for (int i=0; i < tileTexturePaths.Length; i++)
-            {
-                tileTextures[i] = content.Load<Texture2D>(tileTexturePaths[i]);
-            }
-        }
-        public void Draw (SpriteBatch spriteBatch)
-        {
-            for(int i = 0; i < mapTiles.GetLength(0); i++)
-            {
-                for(int j = 0; j < mapTiles.GetLength(1); j++)
-                {
-                    Rectangle drawRectangle = new Rectangle(TILE_START_X + (j * TILE_SIZE),TILE_START_Y + (i * TILE_SIZE),TILE_SIZE,TILE_SIZE );
-                    //find texture by using array's int value as indexer
-                    spriteBatch.Draw(tileTextures[mapTiles[i, j]], drawRectangle, Color.White);
-                    /*switch (mapTiles[i, j])
-                    {
-                        case 0:
-                            spriteBatch.Draw(tileTextures[0], drawRectangle, Color.White);
-                            break;
-                        case 1:
-                            spriteBatch.Draw(tileTextures[1], drawRectangle, Color.White);
-                            break;
-                    }*/
-
-                }
-            }
-            
-        }
-        //checks the exact type of tyle, returns sprite number
-        public int CheckTileType(Vector2 position)
-        {
-            int index1 = ((int)position.X - TILE_START_X) / TILE_SIZE; //1. index 
-            int index2 = ((int)position.Y - TILE_START_Y) / TILE_SIZE; //2. index
-            return mapTiles[index1, index2];
-        }
-        //checks if tile is walkable
-        public bool CheckWalkable(int posX, int posY)
-        {
-            int index1 = (posX - TILE_START_X) / TILE_SIZE; //1. index 
-            int index2 = (posY - TILE_START_Y) / TILE_SIZE; //2. index
-            if (mapTiles[index2,index1] == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
 
     public class CustomMouse
     {

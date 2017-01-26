@@ -12,10 +12,16 @@ namespace TopDownTiles
     {
         private string texturePath = @"graphics/player_east";
         Texture2D texture;
-        private static int WIDTH = 35, HEIGHT = 35;
-        private Vector2 spriteCenter = new Vector2(WIDTH / 2, HEIGHT / 2);
+        private Vector2 spriteCenter;
         int speed = 3;
 
+        public Player()
+        {
+            //Set start values.
+            Width = 35;
+            Height = 35;
+            spriteCenter = new Vector2(Width / 2, Height / 2);
+        }
 
         public void LoadContent(ContentManager content)
         {
@@ -29,9 +35,8 @@ namespace TopDownTiles
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //Create a Rectangle centered around our player position.
-            Rectangle drawRectangle = new Rectangle((int)position.X - WIDTH/2, (int)position.Y - HEIGHT/2, WIDTH, HEIGHT);
-
+            //Create a Rectangle
+            Rectangle drawRectangle = new Rectangle((int)position.X, (int)position.Y, Width, Height);
             //Draw and rotate our sprite.
             spriteBatch.Draw(texture, drawRectangle, null, Color.White, InputManager.floatDirection, spriteCenter, SpriteEffects.None, 0);
         }
