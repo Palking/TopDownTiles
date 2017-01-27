@@ -13,7 +13,7 @@ namespace TopDownTiles
         private string texturePath = @"graphics/player_east";
         Texture2D texture;
         int speed = 3;
-        public float ShootDelay { get; set; } = 2000;
+        public float ShootDelay { get; set; } = 100;
         public float currShootDelay { get; set; } = 0;
         public float BulletVelocity { get; set; } = 4;
 
@@ -29,7 +29,7 @@ namespace TopDownTiles
             texture = content.Load<Texture2D>(texturePath);
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
 
             //MOVEMENT HANDLER
@@ -39,15 +39,23 @@ namespace TopDownTiles
                 Move(InputManager.floatDirection, speed);
             }
 
+            //turn the player(sprite)
+            direction = InputManager.floatDirection;
+
             //SHOOT HANDLER
-            if (InputManager.Shoot() && ShootDelay <= 0)
+            if (InputManager.Shoot() && currShootDelay <= 0)
             {
                 Shoot();
             }
             if(currShootDelay > 0)
             {
-                currShootDelay--;
+                currShootDelay -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                if(currShootDelay < 0)
+                {
+                    currShootDelay = 0;
+                }
             }
+            game.ui.DebugMessage = "Shoot Delay: " + currShootDelay.ToString();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -55,7 +63,7 @@ namespace TopDownTiles
             //Create a Rectangle
             Rectangle drawRectangle = new Rectangle((int)position.X, (int)position.Y, Width, Height);
             //Draw and rotate our sprite.
-            spriteBatch.Draw(texture, drawRectangle, null, Color.White, InputManager.floatDirection, SpriteCenter, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawRectangle, null, Color.White, direction, SpriteCenter, SpriteEffects.None, 0);
         }        
 
         private void Shoot()
@@ -71,6 +79,8 @@ namespace TopDownTiles
                     //Should use player.direction ASAP
                     currProj.direction = InputManager.floatDirection;
                     currProj.velocity = BulletVelocity;
+
+
                     currProj.position = position;
                     break;
                 }

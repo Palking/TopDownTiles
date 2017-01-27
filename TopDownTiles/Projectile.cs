@@ -14,12 +14,14 @@ namespace TopDownTiles
         static Texture2D texture;
         public bool isActive { get; set; }
 
-        public Projectile()
+        public Projectile(TopDownTiles currGame)
         {
+            game = currGame;
             isActive = false;
             Width = 15;
             Height = 15;
-            position = new Vector2(0, 0);
+            //'Start position'. Shouldnt matter since it will never be displayed or calculated here.
+            position = new Vector2(200, 200);
         }
 
         static public void LoadContent(ContentManager content)
@@ -36,7 +38,13 @@ namespace TopDownTiles
             //Create a Rectangle
             Rectangle drawRectangle = new Rectangle((int)position.X, (int)position.Y, Width, Height);
             //Draw and rotate our sprite.
-            game.spriteBatch.Draw(texture, drawRectangle, null, Color.White, InputManager.floatDirection, SpriteCenter, SpriteEffects.None, 0);
+            game.spriteBatch.Draw(texture, drawRectangle, null, Color.White, direction, SpriteCenter, SpriteEffects.None, 0);
+        }
+
+        public override void Collide()
+        {
+            isActive = false;
+            //base.Collide();
         }
     }
 }

@@ -14,7 +14,6 @@ namespace TopDownTiles
         public bool paused { get; set; } = false;
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch { get; set; } 
-        SpriteFont basicFont;
         public TileManager tileManager { get; } = new TileManager();
         CustomMouse mouse = new CustomMouse();
         public Player player { get; } = new Player();
@@ -47,7 +46,7 @@ namespace TopDownTiles
 
             for(int i = 0; i < projectiles.Length; i++)
             {
-                projectiles[i] = new Projectile();
+                projectiles[i] = new Projectile(this);
             }
         }
 
@@ -59,7 +58,6 @@ namespace TopDownTiles
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            basicFont = Content.Load<SpriteFont>(@"fonts/BasicFont");
             // TODO: use this.Content to load your game content here
             tileManager.LoadContent(this.Content);
             mouse.LoadContent(this.Content);
@@ -96,17 +94,19 @@ namespace TopDownTiles
 
             InputManager.Update();
             mouse.Update();
+            ui.Update();
             base.Update(gameTime);
             // TODO: Add your update logic here
             if (!paused)
             {
-                player.Update();
-            }
-            foreach(Projectile proj in projectiles)
-            {
-                if(proj.isActive)
+                player.Update(gameTime);
+
+                foreach (Projectile proj in projectiles)
                 {
-                    proj.Update();
+                    if (proj.isActive)
+                    {
+                        proj.Update();
+                    }
                 }
             }
         }

@@ -27,7 +27,15 @@ namespace TopDownTiles
         }
         public void Update()
         {
-            
+            int inactiveBullets = 0;
+            foreach(Projectile proj in game.projectiles)
+            {
+                if (!proj.isActive)
+                {
+                    inactiveBullets++;
+                }
+            }
+            DebugMessage2 = "Unused Bullets: " + inactiveBullets.ToString();
         }
 
         public void Draw()

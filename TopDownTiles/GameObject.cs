@@ -31,12 +31,12 @@ namespace TopDownTiles
             game = currGame;
         }
 
-        public void Move(float direction, float speed) {
+        public void Move(float currDirection, float speed) {
 
-            Move(direction, speed, true);
+            Move(currDirection, speed, true);
         }
 
-        public void Move(float direction, float speed, bool collides)
+        public void Move(float currDirection, float speed, bool collides)
         {
             var currX = position.X;
             var currY = position.Y;
@@ -44,10 +44,14 @@ namespace TopDownTiles
             //Evaluate collisions
             if (collides)
             {
-                currX += (float)(Math.Cos((double)InputManager.floatDirection) * speed);
-                currY += (float)(Math.Sin((double)InputManager.floatDirection) * speed);
-                game.ui.DebugMessage = "Speed X = " + (int)(Math.Cos((double)InputManager.floatDirection)*speed);
-                game.ui.DebugMessage2 = "Speed Y = " + (int)(Math.Sin((double)InputManager.floatDirection)*speed);
+                currX += (float)(Math.Cos((double)currDirection) * speed);
+                currY += (float)(Math.Sin((double)currDirection) * speed);
+
+                //Colliding is pretty abstract at a high level. Inheriting classes must implement own version.
+                if (!CheckCornersWalkable(currX, currY))
+                {
+                    Collide();
+                }
 
                 //Horizontal movement part
                 if (CheckCornersWalkable(currX, position.Y))
@@ -66,8 +70,8 @@ namespace TopDownTiles
             //If Objects are supposed to pass beyond colliders. Why would they ever?
             else
             {
-                currX += (int)(Math.Cos((double)InputManager.floatDirection) * speed);
-                currY += (int)(Math.Sin((double)InputManager.floatDirection) * speed);
+                currX += (int)(Math.Cos((double)currDirection) * speed);
+                currY += (int)(Math.Sin((double)currDirection) * speed);
                 //Set new position.
                 position = new Vector2(currX, currY);
             }
@@ -79,7 +83,16 @@ namespace TopDownTiles
                 throw new Exception("GameObject moved out of the map.");
             }
         }
-
+        public virtual void Collide()
+        {
+            Console.WriteLine("Something collided.");
+        }
+        /// <summary>
+        /// Checks for the current GameObject if all for borders are at walkable tiles.
+        /// </summary>
+        /// <param name="posX">X position of the center.</param>
+        /// <param name="posY">Y position of the center.</param>
+        /// <returns>Returns true if all for are walkable. False if atleast one isnt.</returns>
         public bool CheckCornersWalkable(float posX, float posY)
         {
                     //Upper-right corner
