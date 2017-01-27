@@ -12,6 +12,19 @@ namespace TopDownTiles
         public TopDownTiles game;
         public int Width { get; set; }
         public int Height { get; set; }
+        public float direction { get; set; }
+        //We might add velocity here and change the player to set velocity = 0 when no direciton button is pressed.
+        //Lets try this right now for Projectiles
+        public float velocity { get; set; }
+
+        public Vector2 SpriteCenter
+        {
+            get
+            {
+                return new Vector2(Width / 2, Height / 2);
+            }
+        }
+
 
         public void LoadGame(TopDownTiles currGame)
         {

@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Projectile.cs" />
     <Compile Include="TileManager.cs" />
     <Compile Include="TopDownTiles.cs" />
     <Compile Include="GameObject.cs" />

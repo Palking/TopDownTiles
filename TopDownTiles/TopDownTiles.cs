@@ -13,12 +13,13 @@ namespace TopDownTiles
     {
         public bool paused { get; set; } = false;
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public SpriteBatch spriteBatch { get; set; } 
         SpriteFont basicFont;
         public TileManager tileManager { get; } = new TileManager();
         CustomMouse mouse = new CustomMouse();
         public Player player { get; } = new Player();
         public UI ui = new UI();
+        public Projectile[] projectiles = new Projectile[50];
 
         public TopDownTiles()
         {
@@ -43,6 +44,7 @@ namespace TopDownTiles
             player.position = new Vector2(285f , 85f);
             ui.LoadGame(this, spriteBatch);
             player.LoadGame(this);
+            //TODO create all projectiles here (and set them inactive)
         }
 
         /// <summary>
@@ -59,6 +61,7 @@ namespace TopDownTiles
             mouse.LoadContent(this.Content);
             player.LoadContent(this.Content);
             ui.LoadContent(this.Content);
+            Projectile.LoadContent(this.Content);
 
         }
 
@@ -93,7 +96,14 @@ namespace TopDownTiles
             // TODO: Add your update logic here
             if (!paused)
             {
-                player.Update(tileManager);
+                player.Update();
+            }
+            foreach(Projectile proj in projectiles)
+            {
+                if(proj.isActive)
+                {
+                    proj.Update();
+                }
             }
         }
 
@@ -112,10 +122,17 @@ namespace TopDownTiles
             //foreground Layer1
             //player Layer2
             player.Draw(spriteBatch);
-            //draw mouse Layer3
-            mouse.Draw(spriteBatch);
+            foreach (Projectile proj in projectiles)
+            {
+                if (proj.isActive)
+                {
+                    proj.Draw();
+                }
+            }
             //draw UI 
             ui.Draw();
+            //draw mouse
+            mouse.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
