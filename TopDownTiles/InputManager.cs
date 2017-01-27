@@ -64,7 +64,11 @@ namespace TopDownTiles
         }
         public static bool Shoot()
         {
-            return Keyboard.GetState().IsKeyDown(Keys.Space);
+            return Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.J);
+        }
+        public static bool TrippleShot()
+        {
+            return Keyboard.GetState().IsKeyDown(Keys.K);
         }
 
         public static void Update()

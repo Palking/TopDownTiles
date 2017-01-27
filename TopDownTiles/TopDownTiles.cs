@@ -64,7 +64,7 @@ namespace TopDownTiles
             player.LoadContent(this.Content);
             ui.LoadContent(this.Content);
             Projectile.LoadContent(this.Content);
-
+            Enemy.LoadContent(this.Content);
         }
 
         /// <summary>

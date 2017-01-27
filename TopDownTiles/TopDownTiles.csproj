@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enemy.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="TileManager.cs" />
     <Compile Include="TopDownTiles.cs" />

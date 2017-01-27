@@ -15,6 +15,8 @@ namespace TopDownTiles
         TopDownTiles game;
         public string DebugMessage { get; set; }
         public string DebugMessage2 { get; set; }
+        public string DebugMessage3 { get; set; }
+        public string DebugMessage4 { get; set; }
 
         public void LoadGame(TopDownTiles current, SpriteBatch currSpriteBatch)
         {
@@ -35,7 +37,7 @@ namespace TopDownTiles
                     inactiveBullets++;
                 }
             }
-            DebugMessage2 = "Unused Bullets: " + inactiveBullets.ToString();
+            DebugMessage3 = "Unused Bullets: " + inactiveBullets.ToString();
         }
 
         public void Draw()
@@ -56,6 +58,14 @@ namespace TopDownTiles
                 if (DebugMessage2 != null)
                 {
                     spriteBatch.DrawString(basicFont, DebugMessage2, new Vector2(10, 45), Color.Black);
+                }
+                if (DebugMessage3 != null)
+                {
+                    spriteBatch.DrawString(basicFont, DebugMessage3, new Vector2(10, 65), Color.Black);
+                }
+                if (DebugMessage4 != null)
+                {
+                    spriteBatch.DrawString(basicFont, DebugMessage4, new Vector2(10, 85), Color.Black);
                 }
             }
             catch

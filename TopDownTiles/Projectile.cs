@@ -31,7 +31,7 @@ namespace TopDownTiles
 
         public void Update()
         {
-            Move(direction, velocity);
+            Move(direction, speed);
         }
         public void Draw()
         {

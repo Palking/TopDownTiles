@@ -12,16 +12,18 @@ namespace TopDownTiles
     {
         private string texturePath = @"graphics/player_east";
         Texture2D texture;
-        int speed = 3;
-        public float ShootDelay { get; set; } = 100;
+        public float ShootDelay { get; set; } = 300;
         public float currShootDelay { get; set; } = 0;
-        public float BulletVelocity { get; set; } = 4;
+        public float TrippleShotDelay { get; set; } = 2000;
+        public float currTrippleShotDelay { get; set; } = 0;
+        public float BulletSpeed { get; set; } = 4;
 
         public Player()
         {
             //Set start values.
             Width = 35;
             Height = 35;
+            speed = 3;
         }
 
         public void LoadContent(ContentManager content)
@@ -56,6 +58,21 @@ namespace TopDownTiles
                 }
             }
             game.ui.DebugMessage = "Shoot Delay: " + currShootDelay.ToString();
+
+            //TRIPLLE SHOT HANDLER
+            if(InputManager.TrippleShot() && currTrippleShotDelay <= 0)
+            {
+                TrippleShot();
+            }
+            if(currTrippleShotDelay > 0)
+            {
+                currTrippleShotDelay -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                if(currTrippleShotDelay < 0)
+                {
+                    currTrippleShotDelay = 0;
+                }
+            }
+            game.ui.DebugMessage2 = "TrippleShot Delay: " + currTrippleShotDelay.ToString();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -65,8 +82,11 @@ namespace TopDownTiles
             //Draw and rotate our sprite.
             spriteBatch.Draw(texture, drawRectangle, null, Color.White, direction, SpriteCenter, SpriteEffects.None, 0);
         }        
-
         private void Shoot()
+        {
+            Shoot(direction);
+        }
+        private void Shoot(float shotDirection)
         {
             //Fire the bullet.
             for(int i = 0; i < game.projectiles.Length; i++)
@@ -76,9 +96,8 @@ namespace TopDownTiles
                 {
                     Projectile currProj = game.projectiles[i];
                     currProj.isActive = true;
-                    //Should use player.direction ASAP
-                    currProj.direction = InputManager.floatDirection;
-                    currProj.velocity = BulletVelocity;
+                    currProj.direction = shotDirection;
+                    currProj.speed = BulletSpeed;
 
 
                     currProj.position = position;
@@ -92,6 +111,17 @@ namespace TopDownTiles
 
             //Reset cooldown.
             currShootDelay = ShootDelay;
+        }
+        public void TrippleShot()
+        {
+            //Calls delay on normal shoot. Might be alright considering Shoot has low CD and is more of an attack speed type than
+            //an actual cooldown. Cant really re-use current version of Shoot() if CD shouldnt be called.
+            Shoot();
+            float shot1 = direction + (MathHelper.Pi * 1 / 8);
+            float shot2 = direction - (MathHelper.Pi * 1 / 8);
+            Shoot(shot1);
+            Shoot(shot2);
+            currTrippleShotDelay = TrippleShotDelay;
         }
     }
 }
