@@ -44,7 +44,11 @@ namespace TopDownTiles
             player.position = new Vector2(285f , 85f);
             ui.LoadGame(this, spriteBatch);
             player.LoadGame(this);
-            //TODO create all projectiles here (and set them inactive)
+
+            for(int i = 0; i < projectiles.Length; i++)
+            {
+                projectiles[i] = new Projectile();
+            }
         }
 
         /// <summary>

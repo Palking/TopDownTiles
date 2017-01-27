@@ -62,6 +62,10 @@ namespace TopDownTiles
                 return false;
             }
         }
+        public static bool Shoot()
+        {
+            return Keyboard.GetState().IsKeyDown(Keys.Space);
+        }
 
         public static void Update()
         {
