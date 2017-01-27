@@ -31,8 +31,8 @@ namespace TopDownTiles
             //Evaluate collisions
             if (collides)
             {
-                currX += (int)(Math.Cos((double)InputManager.floatDirection) * speed);
-                currY += (int)(Math.Sin((double)InputManager.floatDirection) * speed);
+                currX += (float)(Math.Cos((double)InputManager.floatDirection) * speed);
+                currY += (float)(Math.Sin((double)InputManager.floatDirection) * speed);
                 game.ui.DebugMessage = "Speed X = " + (int)(Math.Cos((double)InputManager.floatDirection)*speed);
                 game.ui.DebugMessage2 = "Speed Y = " + (int)(Math.Sin((double)InputManager.floatDirection)*speed);
 
