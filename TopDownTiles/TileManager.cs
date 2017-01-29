@@ -70,16 +70,6 @@ namespace TopDownTiles
                     Rectangle drawRectangle = new Rectangle(TILE_START_X + (j * TILE_SIZE), TILE_START_Y + (i * TILE_SIZE), TILE_SIZE, TILE_SIZE);
                     //find texture by using array's int value as indexer
                     spriteBatch.Draw(tileTextures[mapTiles[i, j]], drawRectangle, Color.White);
-                    /*switch (mapTiles[i, j])
-                    {
-                        case 0:
-                            spriteBatch.Draw(tileTextures[0], drawRectangle, Color.White);
-                            break;
-                        case 1:
-                            spriteBatch.Draw(tileTextures[1], drawRectangle, Color.White);
-                            break;
-                    }*/
-
                 }
             }
 

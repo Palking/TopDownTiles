@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace TopDownTiles
         //Lets try this right now for Projectiles
         public float speed { get; set; }
 
+        //TODO implement generic constructor.
+
         public Vector2 SpriteCenter
         {
             get
@@ -35,6 +38,16 @@ namespace TopDownTiles
         public void Move(float currDirection, float speed) {
 
             Move(currDirection, speed, true);
+        }
+
+
+        //Needs texture if the child class doesnt have a texture for each single implementation. (i.e. Projectiles).
+        public virtual void Draw(Texture2D currTexture)
+        {
+            //Create a Rectangle
+            Rectangle drawRectangle = new Rectangle((int)position.X, (int)position.Y, Width, Height);
+            //Draw and rotate our sprite.
+            game.spriteBatch.Draw(currTexture, drawRectangle, null, Color.White, direction, SpriteCenter, SpriteEffects.None, 0);
         }
 
         public void Move(float currDirection, float speed, bool collides)

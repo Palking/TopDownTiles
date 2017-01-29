@@ -19,6 +19,8 @@ namespace TopDownTiles
         public Player player { get; } = new Player();
         public UI ui = new UI();
         public Projectile[] projectiles = new Projectile[50];
+        //Maybe use a list instead?
+        public Enemy[] enemies = new Enemy[10];
 
         public TopDownTiles()
         {
@@ -48,6 +50,15 @@ namespace TopDownTiles
             {
                 projectiles[i] = new Projectile(this);
             }
+
+            for(int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i] = new Enemy();
+                enemies[i].LoadGame(this);
+            }
+            //Temporal enemy creation
+            enemies[0].isActive = true;
+            enemies[0].position = new Vector2(200,200);
         }
 
         /// <summary>
@@ -86,6 +97,7 @@ namespace TopDownTiles
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            //Should be moved to InputManager.
             //INPUT HANDLING
             if (!InputManager.currState.IsKeyDown(Keys.P) && InputManager.lastState.IsKeyDown(Keys.P))
             {
@@ -101,11 +113,21 @@ namespace TopDownTiles
             {
                 player.Update(gameTime);
 
+                //Update projectiles.
                 foreach (Projectile proj in projectiles)
                 {
                     if (proj.isActive)
                     {
                         proj.Update();
+                    }
+                }
+
+                //Update enemies.
+                foreach (Enemy enemy in enemies)
+                {
+                    if (enemy.isActive)
+                    {
+                        enemy.Update();
                     }
                 }
             }
@@ -125,12 +147,19 @@ namespace TopDownTiles
             tileManager.Draw(spriteBatch);
             //foreground Layer1
             //player Layer2
-            player.Draw(spriteBatch);
+            player.Draw();
             foreach (Projectile proj in projectiles)
             {
                 if (proj.isActive)
                 {
                     proj.Draw();
+                }
+            }
+            foreach(Enemy enemy in enemies)
+            {
+                if (enemy.isActive)
+                {
+                    enemy.Draw();
                 }
             }
             //draw UI 

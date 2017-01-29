@@ -75,12 +75,9 @@ namespace TopDownTiles
             game.ui.DebugMessage2 = "TrippleShot Delay: " + currTrippleShotDelay.ToString();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            //Create a Rectangle
-            Rectangle drawRectangle = new Rectangle((int)position.X, (int)position.Y, Width, Height);
-            //Draw and rotate our sprite.
-            spriteBatch.Draw(texture, drawRectangle, null, Color.White, direction, SpriteCenter, SpriteEffects.None, 0);
+            Draw(texture);
         }        
         private void Shoot()
         {

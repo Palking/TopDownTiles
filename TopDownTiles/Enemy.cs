@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -15,17 +16,21 @@ namespace TopDownTiles
         public float HP { get; private set; }
         public bool isActive { get; set; } 
 
+        //ISSUE: Width and Height is 0 when Draw() is called.
+        //ANSWER:   Apparently the reset was caused because i made an error in the constructor overload?
+        //          Should look up constructor overload again.
 
-        public Enemy(TopDownTiles currGame)
+        //ISSUE: Load game in constructor or LoadGame()? Constructor doesnt seem to work all the time?
+        //ANSWER: Probably the same as the one above. Test it out later on.
+        public Enemy()
         {
-            game = currGame;
+            position = new Vector2(0,0);
             Width = 30;
             Height = 30;
             HP = maxHP;
-
-            //Change the default isActive state to false once we get multiple enemies and an enemy array.
-            isActive = true;
+            isActive = false;
         }
+
 
         public static void LoadContent(ContentManager content)
         {
@@ -34,13 +39,22 @@ namespace TopDownTiles
 
         public void Update()
         {
-            float randomDir = random.Next(0, 100);
+            float maxRotation = (MathHelper.Pi / 8);
+            float randomDir = random.Next(-10, 10);
+            direction += ((float)randomDir / 10f) * maxRotation;
 
         }
 
         public void Draw()
         {
-
+            if (game != null)
+            {
+                Draw(texture);
+            }
+            else
+            {
+                Console.WriteLine("Enemy.game was null.");
+            }
         }
     }
 }
