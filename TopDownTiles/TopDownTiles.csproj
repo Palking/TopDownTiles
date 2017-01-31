@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="CustomMouse.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="TileManager.cs" />
     <Compile Include="TopDownTiles.cs" />

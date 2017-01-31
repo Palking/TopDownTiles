@@ -13,7 +13,7 @@ namespace TopDownTiles
     {
         static string[] mouseTexturePaths = { @"graphics/mouse" };
         Texture2D[] mouseTextures = new Texture2D[mouseTexturePaths.Length];
-        private Vector2 position;
+        public Vector2 position { get; private set; }
         const int WIDTH = 20;
         const int HEIGHT = 20;
 
@@ -28,8 +28,7 @@ namespace TopDownTiles
         public void Update()
         {
             MouseState mouse = Mouse.GetState();
-            position.X = mouse.X;
-            position.Y = mouse.Y;
+            position = new Vector2(mouse.X, mouse.Y);
         }
 
         public void Draw(SpriteBatch spriteBatch)

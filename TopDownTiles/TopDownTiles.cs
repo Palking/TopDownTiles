@@ -15,7 +15,7 @@ namespace TopDownTiles
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch { get; set; } 
         public TileManager tileManager { get; } = new TileManager();
-        CustomMouse mouse = new CustomMouse();
+        public CustomMouse mouse = new CustomMouse();
         public Player player { get; } = new Player();
         public UI ui = new UI();
         public Projectile[] projectiles = new Projectile[50];
@@ -58,7 +58,8 @@ namespace TopDownTiles
             }
             //Temporal enemy creation
             enemies[0].isActive = true;
-            enemies[0].position = new Vector2(200,200);
+            enemies[0].position = new Vector2(700,350);
+
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace TopDownTiles
                 {
                     if (enemy.isActive)
                     {
-                        enemy.Update();
+                        enemy.Update(gameTime);
                     }
                 }
             }
@@ -174,5 +175,6 @@ namespace TopDownTiles
         {
             paused = !paused;
         }
+
     }
 }

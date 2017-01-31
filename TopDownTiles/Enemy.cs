@@ -16,6 +16,10 @@ namespace TopDownTiles
         public float HP { get; private set; }
         public bool isActive { get; set; } 
 
+
+        private double SecondsUntilTurn = 0.5;
+        private double SecondsSinceTurn { get; set; } = 0;
+
         //ISSUE: Width and Height is 0 when Draw() is called.
         //ANSWER:   Apparently the reset was caused because i made an error in the constructor overload?
         //          Should look up constructor overload again.
@@ -25,6 +29,7 @@ namespace TopDownTiles
         public Enemy()
         {
             position = new Vector2(0,0);
+            speed = 1;
             Width = 30;
             Height = 30;
             HP = maxHP;
@@ -37,19 +42,39 @@ namespace TopDownTiles
             texture = content.Load<Texture2D>(texturePath);
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
-            float maxRotation = (MathHelper.Pi / 8);
-            float randomDir = random.Next(-10, 10);
-            direction += ((float)randomDir / 10f) * maxRotation;
+            if (SecondsSinceTurn >= SecondsUntilTurn)
+            {
+                float maxRotation = (MathHelper.Pi / 4);
+                float randomDir = random.Next(-10, 10);
+                direction += ((float)randomDir / 10f) * maxRotation;
+                SecondsSinceTurn = 0;
+            }
+            else
+            {
+                SecondsSinceTurn += gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            game.ui.DebugMessage3 = SecondsSinceTurn.ToString();
+            Move(direction, speed);
 
         }
+        public override void CollideWithTerrain()
+        {
+            base.CollideWithTerrain();
+            direction += MathHelper.Pi;
+        }
 
+        public override void CollideWithProjectile()
+        {
+            base.CollideWithProjectile();
+            this.isActive = false;
+        }
         public void Draw()
         {
             if (game != null)
             {
-                Draw(texture);
+                Draw(texture, Color.Black);
             }
             else
             {

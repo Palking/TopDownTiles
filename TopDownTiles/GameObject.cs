@@ -9,14 +9,12 @@ namespace TopDownTiles
 {
     public class GameObject
     {
+        public TopDownTiles game;
         public static readonly Random random = new Random();
         public Vector2 position { get; set; }
-        public TopDownTiles game;
         public int Width { get; set; }
         public int Height { get; set; }
         public float direction { get; set; }
-        //We might add velocity here and change the player to set velocity = 0 when no direciton button is pressed.
-        //Lets try this right now for Projectiles
         public float speed { get; set; }
 
         //TODO implement generic constructor.
@@ -29,11 +27,19 @@ namespace TopDownTiles
             }
         }
 
+        public Rectangle RectangleHitbox
+        {
+            get
+            {
+                return new Rectangle((int)position.X - Width / 2, (int)position.Y - Height / 2, Width, Height);
+            }
+        }
 
         public void LoadGame(TopDownTiles currGame)
         {
             game = currGame;
         }
+
 
         public void Move(float currDirection, float speed) {
 
@@ -42,13 +48,19 @@ namespace TopDownTiles
 
 
         //Needs texture if the child class doesnt have a texture for each single implementation. (i.e. Projectiles).
-        public virtual void Draw(Texture2D currTexture)
+        public virtual void Draw(Texture2D currTexture, Color color)
         {
             //Create a Rectangle
             Rectangle drawRectangle = new Rectangle((int)position.X, (int)position.Y, Width, Height);
             //Draw and rotate our sprite.
-            game.spriteBatch.Draw(currTexture, drawRectangle, null, Color.White, direction, SpriteCenter, SpriteEffects.None, 0);
+            game.spriteBatch.Draw(currTexture, drawRectangle, null, color, direction, SpriteCenter, SpriteEffects.None, 0);
         }
+        public virtual void Draw(Texture2D currTexture)
+        {
+            Draw(currTexture, Color.White);
+        }
+
+
 
         public void Move(float currDirection, float speed, bool collides)
         {
@@ -64,7 +76,7 @@ namespace TopDownTiles
                 //Colliding is pretty abstract at a high level. Inheriting classes must implement own version.
                 if (!CheckCornersWalkable(currX, currY))
                 {
-                    Collide();
+                    CollideWithTerrain();
                 }
 
                 //Horizontal movement part
@@ -80,7 +92,6 @@ namespace TopDownTiles
                 }
 
             }
-
             //If Objects are supposed to pass beyond colliders. Why would they ever?
             else
             {
@@ -90,6 +101,35 @@ namespace TopDownTiles
                 position = new Vector2(currX, currY);
             }
 
+            //Check for collision with Entities.
+            foreach (Projectile proj in game.projectiles)
+            {
+                if (proj.isActive)
+                {
+                    if (this.RectangleHitbox.Intersects(proj.RectangleHitbox))
+                    {
+                        if (proj != this)
+                        {
+                            CollideWithProjectile();
+                        }
+                    }
+                }
+            }
+
+            foreach (Enemy enemy in game.enemies)
+            {
+                if (enemy.isActive)
+                {
+                    if (this.RectangleHitbox.Intersects(enemy.RectangleHitbox))
+                    {
+                        if (enemy != this)
+                        {
+                            CollideWithEnemy();
+                        }
+                    }
+                }
+            }
+
             //Check if GameObject is out of map. 
             if (position.X < 0 || position.X > game.tileManager.EndX ||
                position.Y < 0 || position.Y > game.tileManager.EndY)
@@ -97,9 +137,30 @@ namespace TopDownTiles
                 throw new Exception("GameObject moved out of the map.");
             }
         }
-        public virtual void Collide()
+
+        //Bugged. Keeping it for later.
+        //public void MoveTowards(Vector2 target)
+        //{
+        //    //1. get x and y difference
+        //    //2. set direction; probably 8 checks done by myself? could also make enemy 'smarter' by allowing every possible direction
+        //    Vector2 difference = target - position;
+        //    float newDir = (float) Math.Atan2((double)difference.X, (double)difference.Y) - (float)(Math.PI / 4);
+        //    Move(newDir, speed);
+        //}
+
+        public virtual void CollideWithTerrain()
         {
-            Console.WriteLine("Something collided.");
+            //Console.WriteLine("Something collided.");
+        }
+
+        public virtual void CollideWithEnemy()
+        {
+
+        }
+
+        public virtual void CollideWithProjectile()
+        {
+
         }
         /// <summary>
         /// Checks for the current GameObject if all for borders are at walkable tiles.

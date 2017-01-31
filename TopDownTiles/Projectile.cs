@@ -41,7 +41,7 @@ namespace TopDownTiles
             game.spriteBatch.Draw(texture, drawRectangle, null, Color.White, direction, SpriteCenter, SpriteEffects.None, 0);
         }
 
-        public override void Collide()
+        public override void CollideWithTerrain()
         {
             isActive = false;
             //base.Collide();

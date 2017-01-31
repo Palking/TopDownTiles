@@ -38,6 +38,8 @@ namespace TopDownTiles
                 }
             }
             DebugMessage3 = "Unused Bullets: " + inactiveBullets.ToString();
+
+            DebugMessage4 = "X: " + game.mouse.position.X + ", " + "Y: " + game.mouse.position.Y;
         }
 
         public void Draw()
