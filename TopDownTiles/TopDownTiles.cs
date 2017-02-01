@@ -13,12 +13,13 @@ namespace TopDownTiles
     {
         public bool paused { get; set; } = false;
         GraphicsDeviceManager graphics;
-        public SpriteBatch spriteBatch { get; set; } 
+        public SpriteBatch spriteBatch { get; private set; } 
         public TileManager tileManager { get; } = new TileManager();
         public CustomMouse mouse = new CustomMouse();
         public Player player { get; } = new Player();
         public UI ui = new UI();
         public Projectile[] projectiles = new Projectile[50];
+        public Camera _camera { get; private set; }
         //Maybe use a list instead?
         public Enemy[] enemies = new Enemy[10];
 
@@ -42,11 +43,12 @@ namespace TopDownTiles
             // TODO: Add your initialization logic here
             base.Initialize();
             //player start position
-            player.position = new Vector2(285f , 85f);
+            player.position = new Vector2(300f , 300f);
             ui.LoadGame(this, spriteBatch);
             player.LoadGame(this);
+            _camera = new Camera(GraphicsDevice.Viewport, this);
 
-            for(int i = 0; i < projectiles.Length; i++)
+            for (int i = 0; i < projectiles.Length; i++)
             {
                 projectiles[i] = new Projectile(this);
             }
@@ -58,7 +60,7 @@ namespace TopDownTiles
             }
             //Temporal enemy creation
             enemies[0].isActive = true;
-            enemies[0].position = new Vector2(700,350);
+            enemies[0].position = new Vector2(500,350);
 
         }
 
@@ -98,6 +100,13 @@ namespace TopDownTiles
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            //Display info, Debug
+            if (Keyboard.GetState().IsKeyDown(Keys.I))
+            {
+                Console.WriteLine("EndX: " + tileManager.EndX.ToString());
+                Console.WriteLine("EndY: " + tileManager.EndY.ToString());
+            }
+
             //Should be moved to InputManager.
             //INPUT HANDLING
             if (!InputManager.currState.IsKeyDown(Keys.P) && InputManager.lastState.IsKeyDown(Keys.P))
@@ -132,6 +141,7 @@ namespace TopDownTiles
                     }
                 }
             }
+            _camera.Update(player);
         }
 
         /// <summary>
@@ -142,8 +152,9 @@ namespace TopDownTiles
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            var viewMatrix = _camera.GetViewMatrix();
+            spriteBatch.Begin(transformMatrix: viewMatrix);
+
             //background Layer0
             tileManager.Draw(spriteBatch);
             //foreground Layer1
@@ -163,8 +174,11 @@ namespace TopDownTiles
                     enemy.Draw();
                 }
             }
+            ui.DrawDynamic();
+            spriteBatch.End();
+            spriteBatch.Begin();
             //draw UI 
-            ui.Draw();
+            ui.DrawStatic();
             //draw mouse
             mouse.Draw(spriteBatch);
             spriteBatch.End();

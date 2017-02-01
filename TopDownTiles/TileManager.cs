@@ -12,30 +12,30 @@ namespace TopDownTiles
     {
         static string[] tileTexturePaths = { @"graphics/Tile0", @"graphics/Tile1" };
         Texture2D[] tileTextures = new Texture2D[tileTexturePaths.Length];
-        public const int TILE_START_X = 200;
+        public const int TILE_START_X = 0; //200 is normal
         public const int TILE_START_Y = 0;
-        const int TILE_SIZE = 50;
+        private const int TILE_SIZE = 50;
 
         //map, to be moved (background child class, maybe even elsewhere?
-        int[,] mapTiles = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                            { 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
-                            { 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0 },
-                            { 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0 },
-                            { 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0 },
-                            { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
-                            { 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 },
-                            { 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0 },
-                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        int[,] mapTiles = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                            { 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0 },
+                            { 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0 },
+                            { 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0 },
+                            { 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0 },
+                            { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0 },
+                            { 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0 },
+                            { 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0 },
+                            { 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0 },
+                            { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                            { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         };
 
         public int EndX
         {
             get
             {
-                int val = (mapTiles.GetLength(0) * TILE_SIZE) + TILE_START_X;
+                int val = (mapTiles.GetLength(1) * TILE_SIZE) + TILE_START_X;
                 return val;
             }
         }
@@ -44,7 +44,7 @@ namespace TopDownTiles
         {
             get
             {
-                int val = (mapTiles.GetLength(1) * TILE_SIZE) + TILE_START_Y;
+                int val = (mapTiles.GetLength(0) * TILE_SIZE) + TILE_START_Y;
                 return val;
             }
         }

@@ -79,6 +79,7 @@ namespace TopDownTiles
         {
             Draw(texture);
         }        
+
         private void Shoot()
         {
             Shoot(direction);

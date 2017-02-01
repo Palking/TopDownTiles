@@ -42,7 +42,7 @@ namespace TopDownTiles
             DebugMessage4 = "X: " + game.mouse.position.X + ", " + "Y: " + game.mouse.position.Y;
         }
 
-        public void Draw()
+        public void DrawStatic()
         {
             try
             {
@@ -51,7 +51,6 @@ namespace TopDownTiles
                 {
                     spriteBatch.DrawString(basicFont, "PAUSED", new Vector2(350f, 280f), Color.White, 0f, new Vector2(0, 0), 5f, SpriteEffects.None, 1);
                 }
-                spriteBatch.DrawString(basicFont, "Player", game.player.position - new Vector2(20,40), Color.Red);
                 spriteBatch.DrawString(basicFont, "Debug menu:", new Vector2(10, 5), Color.Black);
                 if (DebugMessage != null)
                 {
@@ -74,6 +73,11 @@ namespace TopDownTiles
             {
                 throw new Exception("Failed to display UI text.");
             }
+        }
+
+        public void DrawDynamic()
+        {
+            spriteBatch.DrawString(basicFont, "Player", game.player.position - new Vector2(20, 40), Color.Red);
         }
     }
 }
