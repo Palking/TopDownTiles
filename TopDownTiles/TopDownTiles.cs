@@ -141,7 +141,7 @@ namespace TopDownTiles
                     }
                 }
             }
-            _camera.Update(player);
+            _camera.Update(this);
         }
 
         /// <summary>
