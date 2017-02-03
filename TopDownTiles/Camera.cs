@@ -25,12 +25,6 @@ namespace TopDownTiles
         public void Update(TopDownTiles game)
         {
             Position = game.player.position;
-            if (InputManager.Shoot())
-            {
-                float x = Position.X;
-                x++;
-                Position = new Vector2(x, Position.Y);
-            }
             Clamp(game.tileManager);
         }
 

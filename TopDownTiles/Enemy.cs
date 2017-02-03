@@ -55,7 +55,6 @@ namespace TopDownTiles
             {
                 SecondsSinceTurn += gameTime.ElapsedGameTime.TotalSeconds;
             }
-            game.ui.DebugMessage3 = SecondsSinceTurn.ToString();
             Move(direction, speed);
 
         }
@@ -65,11 +64,17 @@ namespace TopDownTiles
             direction += MathHelper.Pi;
         }
 
-        public override void CollideWithProjectile()
+
+        public void ReceiveDamage(float dmg)
         {
-            base.CollideWithProjectile();
-            this.isActive = false;
+            HP -= dmg;
+            if(HP <= 0)
+            {
+                HP = maxHP;
+                isActive = false;
+            }
         }
+
         public void Draw()
         {
             if (game != null)

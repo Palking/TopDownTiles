@@ -12,7 +12,7 @@ namespace TopDownTiles
     public class TopDownTiles : Game
     {
         public bool paused { get; set; } = false;
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics { get; private set; }
         public SpriteBatch spriteBatch { get; private set; } 
         public TileManager tileManager { get; } = new TileManager();
         public CustomMouse mouse = new CustomMouse();
@@ -151,10 +151,9 @@ namespace TopDownTiles
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             var viewMatrix = _camera.GetViewMatrix();
+            //Add destination rectangle to move map to the left of the UI
             spriteBatch.Begin(transformMatrix: viewMatrix);
-
             //background Layer0
             tileManager.Draw(spriteBatch);
             //foreground Layer1

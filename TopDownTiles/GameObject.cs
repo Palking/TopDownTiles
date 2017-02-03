@@ -124,7 +124,7 @@ namespace TopDownTiles
                     {
                         if (enemy != this)
                         {
-                            CollideWithEnemy();
+                            CollideWithEnemy(enemy);
                         }
                     }
                 }
@@ -153,7 +153,7 @@ namespace TopDownTiles
             //Console.WriteLine("Something collided.");
         }
 
-        public virtual void CollideWithEnemy()
+        public virtual void CollideWithEnemy(Enemy enemy)
         {
 
         }

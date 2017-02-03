@@ -13,6 +13,7 @@ namespace TopDownTiles
         static private string texturePath = @"graphics/player_east";
         static Texture2D texture;
         public bool isActive { get; set; }
+        public float dmg { get; set; }
 
         public Projectile(TopDownTiles currGame)
         {
@@ -35,12 +36,14 @@ namespace TopDownTiles
         }
         public void Draw()
         {
-            //Create a Rectangle
-            Rectangle drawRectangle = new Rectangle((int)position.X, (int)position.Y, Width, Height);
-            //Draw and rotate our sprite.
-            game.spriteBatch.Draw(texture, drawRectangle, null, Color.White, direction, SpriteCenter, SpriteEffects.None, 0);
+            Draw(Projectile.texture);
         }
 
+        public override void CollideWithEnemy(Enemy enemy)
+        {
+            enemy.ReceiveDamage(dmg);
+            isActive = false;
+        }
         public override void CollideWithTerrain()
         {
             isActive = false;

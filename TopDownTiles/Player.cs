@@ -17,6 +17,7 @@ namespace TopDownTiles
         public float TrippleShotDelay { get; set; } = 2000;
         public float currTrippleShotDelay { get; set; } = 0;
         public float BulletSpeed { get; set; } = 4;
+        public float dmg { get; set; } = 50;
 
         public Player()
         {
@@ -33,7 +34,8 @@ namespace TopDownTiles
 
         public void Update(GameTime gameTime)
         {
-
+            game.ui.DebugMessage3 = "X: " + position.X;
+            game.ui.DebugMessage4 = "Y: " + position.Y; 
             //MOVEMENT HANDLER
             //move when direction buttons are pressed
             if (InputManager.Left() || InputManager.Right() || InputManager.Up() || InputManager.Down())
@@ -57,7 +59,6 @@ namespace TopDownTiles
                     currShootDelay = 0;
                 }
             }
-            game.ui.DebugMessage = "Shoot Delay: " + currShootDelay.ToString();
 
             //TRIPLLE SHOT HANDLER
             if(InputManager.TrippleShot() && currTrippleShotDelay <= 0)
@@ -72,7 +73,6 @@ namespace TopDownTiles
                     currTrippleShotDelay = 0;
                 }
             }
-            game.ui.DebugMessage2 = "TrippleShot Delay: " + currTrippleShotDelay.ToString();
         }
 
         public void Draw()
@@ -96,7 +96,7 @@ namespace TopDownTiles
                     currProj.isActive = true;
                     currProj.direction = shotDirection;
                     currProj.speed = BulletSpeed;
-
+                    currProj.dmg = dmg;
 
                     currProj.position = position;
                     break;
